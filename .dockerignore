@@ -1,0 +1,6 @@
+.git
+.github
+.travis.yml
+.pre-commit-config.yaml
+README.md
+LICENSE
