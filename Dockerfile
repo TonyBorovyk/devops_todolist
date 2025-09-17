@@ -1,20 +1,26 @@
 ARG PYTHON_VERSION=3.8
-FROM python:${PYTHON_VERSION} AS base
+FROM python:${PYTHON_VERSION} AS build
+
 WORKDIR /devops_todolist
 
-COPY . .
+COPY requirements.txt .
+RUN pip install --upgrade pip &&  \
+    pip install --prefix=/install -r requirements.txt
 
+
+ARG PYTHON_VERSION=3.8
 FROM python:${PYTHON_VERSION}-slim
-WORKDIR /devops_todolist
 
 ENV PYTHONUNBUFFERED=1
 
-COPY --from=base /devops_todolist .
-RUN pip install --upgrade pip && \
-    pip install -r requirements.txt && \
-    python manage.py migrate
+WORKDIR /devops_todolist
+
+COPY --from=build /install /usr/local
+COPY . .
+
+RUN python manage.py migrate
 
 EXPOSE 8080
 
-ENTRYPOINT ["python", "manage.py", "runserver", "0.0.0.0:8080"]
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8080"]
 

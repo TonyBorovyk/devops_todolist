@@ -11,8 +11,8 @@ Pushing image to docker_hub
 docker push antonborovyk2001/todoapp:1.0.0
 
 Command to start a container:
-docker run -p 8080:8080 todoapp:1.0.0
 docker run -p 8080:8080 antonborovyk2001/todoapp:1.0.0
 
 Browser access link:
 http://localhost:8080/
+
